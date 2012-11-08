@@ -33,20 +33,24 @@ namespace Upsmile.Sync.Initiator
 
         private string GetConnectionString()
         {
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-            sqlBuilder.MaxPoolSize = Properties.Settings.Default.MaxPoolSize;
-            sqlBuilder.Pooling = Properties.Settings.Default.Pooling;
-            sqlBuilder.UserID = Properties.Settings.Default.UserID;
-            sqlBuilder.DataSource = Properties.Settings.Default.DataSource;
-            sqlBuilder.Password = Properties.Settings.Default.Password;
-            string ProviderString = sqlBuilder.ToString();
+            var sqlBuilder = new SqlConnectionStringBuilder
+                                 {
+                                     MaxPoolSize = Properties.Settings.Default.MaxPoolSize,
+                                     Pooling = Properties.Settings.Default.Pooling,
+                                     UserID = Properties.Settings.Default.UserID,
+                                     DataSource = Properties.Settings.Default.DataSource,
+                                     Password = Properties.Settings.Default.Password
+                                 };
+            var ProviderString = sqlBuilder.ToString();
 
-            EntityConnectionStringBuilder entBuilder = new EntityConnectionStringBuilder();
-            entBuilder.Provider = "Devart.Data.Oracle";
-            entBuilder.ProviderConnectionString = ProviderString;
-            entBuilder.Metadata = @"res://*/emSyncServices.csdl|
+            var entBuilder = new EntityConnectionStringBuilder
+                                 {
+                                     Provider = "Devart.Data.Oracle",
+                                     ProviderConnectionString = ProviderString,
+                                     Metadata = @"res://*/emSyncServices.csdl|
                                         res://*/emSyncServices.ssdl|
-                                        res://*/emSyncServices.msl";
+                                        res://*/emSyncServices.msl"
+                                 };
             return entBuilder.ToString();
         }
 
@@ -77,10 +81,10 @@ namespace Upsmile.Sync.Initiator
                         this.WriteLog(USLogLevel.Trace | USLogLevel.Debug, "EntitySync: aLinkSyncServiceEntitiesId = {0} Описание {1}; Сущность {2}: {3}; Филиал {4}",
                                 aLinkSyncServiceEntitiesId, _syncParams.Description, _syncParams.ElsysTypeId,
                                 _syncParams.ElsysTypeName, _syncParams.BranchName);
-                        int lIteratorNumber = 1;
+                        var lIteratorNumber = 1;
                         var lErrorMsg = string.Empty;
                         var lJSonElements = string.Empty;
-                        int lSyncResult = 0;
+                        int lSyncResult;
 
                         do
                         {
@@ -110,7 +114,6 @@ namespace Upsmile.Sync.Initiator
                                         {
                                             this.WriteLog(USLogLevel.Trace, "EntitySync: aLinkSyncServiceEntitiesId = {0} lJsonInData сформирован = {1}", aLinkSyncServiceEntitiesId, lJsonInData);
                                         }
-                                        lInData = null;
 
                                         this.WriteLog(USLogLevel.Trace, "EntitySync: Кодировка на клиенте {0}", Encoding.Default.EncodingName);
                                         // создаем поток который будет передан на филиал
@@ -122,13 +125,15 @@ namespace Upsmile.Sync.Initiator
                                         using (var ms = new MemoryStream(Encoding.Convert(DBEncoding, TransmissionEncoding, DBEncoding.GetBytes(lJsonInData))))
                                         {
                                             this.WriteLog(USLogLevel.Trace, "EntitySync: aLinkSyncServiceEntitiesId = {0} MemoryStream создан", aLinkSyncServiceEntitiesId);
-                                            lJsonInData = String.Empty;
 
-                                            var lBinding = new TcpChunkingBinding();
-                                            lBinding.OpenTimeout = Properties.Settings.Default.OpenTimeout;
-                                            lBinding.ReceiveTimeout = Properties.Settings.Default.ReceiveTimeout;
-                                            lBinding.SendTimeout = Properties.Settings.Default.SendTimeout;
-                                            lBinding.CloseTimeout = Properties.Settings.Default.CloseTimeout;
+                                            var lBinding = new TcpChunkingBinding
+                                                               {
+                                                                   OpenTimeout = Properties.Settings.Default.OpenTimeout,
+                                                                   ReceiveTimeout =
+                                                                       Properties.Settings.Default.ReceiveTimeout,
+                                                                   SendTimeout = Properties.Settings.Default.SendTimeout,
+                                                                   CloseTimeout = Properties.Settings.Default.CloseTimeout
+                                                               };
                                             this.WriteLog(USLogLevel.Trace, "lBinding params lBinding.OpenTimeout = {0}; lBinding.ReceiveTimeout = {1}; lBinding.SendTimeout = {2}; lBinding.CloseTimeout = {3}", lBinding.OpenTimeout, lBinding.ReceiveTimeout, lBinding.SendTimeout, lBinding.CloseTimeout);
 
                                             using (var factory = new ChannelFactory<IUSExService>(lBinding, new EndpointAddress(_syncParams.EndPointAddress)))
@@ -194,8 +199,6 @@ namespace Upsmile.Sync.Initiator
                                     aLinkSyncServiceEntitiesId, _syncParams.Description, _syncParams.ElsysTypeId,
                                     _syncParams.ElsysTypeName, _syncParams.BranchName, lResult);
                                 lResult = string.Empty;
-                                break;
-                            default:
                                 break;
                         }
                     }
