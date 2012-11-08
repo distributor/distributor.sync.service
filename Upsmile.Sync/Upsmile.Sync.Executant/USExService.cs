@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using NLog;
 using Upsmile.Sync.BasicClasses;
 using Upsmile.Sync.BasicClasses.ExtensionMethods;
 
@@ -27,8 +26,8 @@ namespace Upsmile.Sync.Executant
             this.WriteLog(USLogLevel.Trace, "EntitySync: Кодировка на базе {0}", DBEncoding.EncodingName);
             this.WriteLog(USLogLevel.Trace, "EntitySync: Кодировка передачи {0}", TransmissionEncoding.EncodingName);
             
-            string lResult = string.Empty;
-            using (StreamReader reader = new StreamReader(aStream, TransmissionEncoding))
+            string lResult;
+            using (var reader = new StreamReader(aStream, TransmissionEncoding))
             {
                 try
                 {
@@ -55,7 +54,7 @@ namespace Upsmile.Sync.Executant
         public string EntitySync(Stream aInValues)
         {
 
-            USInServiceRetValues lResult = new USInServiceRetValues() { Result = 1, ErrorMessage = string.Empty };
+            var lResult = new USInServiceRetValues { Result = 1, ErrorMessage = string.Empty };
 
             // входные параметры элемент класса USInServiceValues
             // сериализованные JSON
@@ -68,7 +67,6 @@ namespace Upsmile.Sync.Executant
                 
                 // десериализация входных данных
                 var lInValues = Newtonsoft.Json.JsonConvert.DeserializeObject<USInServiceValues>(lJsonInValues);
-                lJsonInValues = string.Empty;
                 this.WriteLog(USLogLevel.Trace, "EntitySync: EntityTypeId = {0} входные данные десериализованы", lInValues.EntityTypeId);
                 
                 // запуск синхронизации
@@ -77,7 +75,6 @@ namespace Upsmile.Sync.Executant
                 var lSyncResult = ldicSync.DicSync(lInValues.EntityTypeId, lInValues.JsonEntityData, ref lSyncErrorMessage);
                 lResult.Result = lSyncResult;
                 lResult.ErrorMessage = lSyncErrorMessage;
-                lInValues = null;
             }
             catch (Exception e)
             {

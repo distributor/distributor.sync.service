@@ -2,7 +2,6 @@
 using System.Data.EntityClient;
 using System.Data.SqlClient;
 using SyncServicesModel;
-using Devart.Common;
 using Upsmile.Sync.BasicClasses.ExtensionMethods;
 
 namespace Upsmile.Sync.Executant
@@ -10,31 +9,36 @@ namespace Upsmile.Sync.Executant
     // базовый класс синхронизации данных
     public class USExDicSync : IUSLogBasicClass
     {
-        private string GetConnectionString()
+        private static string GetConnectionString()
         {
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-                
-            sqlBuilder.MaxPoolSize = Properties.Settings.Default.MaxPoolSize;
-            sqlBuilder.Pooling = Properties.Settings.Default.Pooling;
-            sqlBuilder.UserID = Properties.Settings.Default.UserID;
-            sqlBuilder.DataSource = Properties.Settings.Default.DataSource;
-            sqlBuilder.Password = Properties.Settings.Default.Password;
+            var sqlBuilder = new SqlConnectionStringBuilder
+                                 {
+                                     MaxPoolSize = Properties.Settings.Default.MaxPoolSize,
+                                     Pooling = Properties.Settings.Default.Pooling,
+                                     UserID = Properties.Settings.Default.UserID,
+                                     DataSource = Properties.Settings.Default.DataSource,
+                                     Password = Properties.Settings.Default.Password
+                                 };
+
             var ProviderString = sqlBuilder.ToString();
                 
 
-            EntityConnectionStringBuilder entBuilder = new EntityConnectionStringBuilder();
-            entBuilder.Provider = "Devart.Data.Oracle";
-            entBuilder.ProviderConnectionString = ProviderString;
-            entBuilder.Metadata = @"res://*/emSyncServices.csdl|
+            var entBuilder = new EntityConnectionStringBuilder
+                                 {
+                                     Provider = "Devart.Data.Oracle",
+                                     ProviderConnectionString = ProviderString,
+                                     Metadata = @"res://*/emSyncServices.csdl|
                                     res://*/emSyncServices.ssdl|
-                                    res://*/emSyncServices.msl";
+                                    res://*/emSyncServices.msl"
+                                 };
             return (entBuilder.ToString());
         }
 
         // синхронизация справочника 
         public int DicSync(double aEntityTypeId, string aJsonEntityData, ref string aErrorMessage)
         {
-            int lResult = 1;
+            if (aErrorMessage == null) throw new ArgumentNullException("aErrorMessage");
+            int lResult;
             aErrorMessage = string.Empty;
 
             try
@@ -67,8 +71,6 @@ namespace Upsmile.Sync.Executant
                             break;
                         case 2:
                             this.WriteLog(USLogLevel.Trace | USLogLevel.Debug, "Синхронизации сущности {0}:{1} была прервана по причине {2}", aEntityTypeId, lElsysTypeName, aErrorMessage);                                                        
-                            break;
-                        default: 
                             break;
                     }                    
                 }

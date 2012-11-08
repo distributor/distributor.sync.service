@@ -15,7 +15,7 @@ namespace Upsmile.Sync.Initiator
     {
         private delegate string CallSyncServiceDelegate();
 
-        private Mutex mut;
+        private readonly Mutex mut;
 
         private string CallSyncService()
         {
@@ -31,11 +31,13 @@ namespace Upsmile.Sync.Initiator
                         new EndpointAddress(new Uri(String.Format("{0}/{1}", lServiceHostAddress, lServiceEndPointAddress)));
                     this.WriteLog(USLogLevel.Trace, "SyncServiceProperties.CallSyncService: lEndPointAddress = {0}", lEndPointAddress);
 
-                    var lBinding = new TcpChunkingBinding();
-                    lBinding.OpenTimeout = Properties.Settings.Default.OpenTimeout;
-                    lBinding.ReceiveTimeout = Properties.Settings.Default.ReceiveTimeout;
-                    lBinding.SendTimeout = Properties.Settings.Default.SendTimeout;
-                    lBinding.CloseTimeout = Properties.Settings.Default.CloseTimeout;
+                    var lBinding = new TcpChunkingBinding
+                                       {
+                                           OpenTimeout = Properties.Settings.Default.OpenTimeout,
+                                           ReceiveTimeout = Properties.Settings.Default.ReceiveTimeout,
+                                           SendTimeout = Properties.Settings.Default.SendTimeout,
+                                           CloseTimeout = Properties.Settings.Default.CloseTimeout
+                                       };
 
                     this.WriteLog(USLogLevel.Trace, "lBinding params lBinding.OpenTimeout = {0}; lBinding.ReceiveTimeout = {1}; lBinding.SendTimeout = {2}; lBinding.CloseTimeout = {3}", lBinding.OpenTimeout, lBinding.ReceiveTimeout, lBinding.SendTimeout, lBinding.CloseTimeout);
 
@@ -93,7 +95,7 @@ namespace Upsmile.Sync.Initiator
     /// </summary>
     class SyncServiceManager
     {
-        private List<SyncServiceProperties> _syncServiceProperties = new List<SyncServiceProperties>();
+        private readonly List<SyncServiceProperties> _syncServiceProperties = new List<SyncServiceProperties>();
 
         public void CallSyncData(double aLinkSyncServiceEntitiesId)
         {
@@ -105,7 +107,7 @@ namespace Upsmile.Sync.Initiator
                         where (sp.LinkSyncServiceEntitiesId == aLinkSyncServiceEntitiesId)
                         select sp;
                 
-                if (q.ToList().Count == 0)
+                if (!q.Any())
                 {
                     // нет такой строки
                     _syncServiceProperties.Add(new SyncServiceProperties(aLinkSyncServiceEntitiesId));
