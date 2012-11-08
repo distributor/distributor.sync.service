@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upsmile.Sync.BasicClasses",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upsmile.Sync.Initiator", "Upsmile.Sync.Initiator\Upsmile.Sync.Initiator.csproj", "{5A647D7F-DB92-4A68-8DB6-ED1200D274D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckService", "CheckService\CheckService.csproj", "{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,16 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Debug|x86.ActiveCfg = Debug|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Debug|x86.Build.0 = Debug|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Release|Any CPU.ActiveCfg = Release|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Release|Mixed Platforms.Build.0 = Release|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Release|x86.ActiveCfg = Release|x86
-		{3E0C7A6B-C889-4EAF-B0C9-C5F55E6BAD67}.Release|x86.Build.0 = Release|x86
 		{5A647D7F-DB92-4A68-8DB6-ED1200D274D9}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{5A647D7F-DB92-4A68-8DB6-ED1200D274D9}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{5A647D7F-DB92-4A68-8DB6-ED1200D274D9}.Debug|Mixed Platforms.Build.0 = Debug|x86
