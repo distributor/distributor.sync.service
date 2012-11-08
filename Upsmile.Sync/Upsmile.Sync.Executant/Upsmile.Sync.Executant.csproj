@@ -54,9 +54,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ChunkingChannel">
-      <HintPath>..\ChunkingChannel.dll</HintPath>
-    </Reference>
     <Reference Include="Devart.Data.Linq, Version=3.2.82.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
@@ -181,6 +178,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\wcf\WF_WCF_Samples\WCF\Extensibility\Channels\ChunkingChannel\CS\ChunkingChannel\ChunkingChannel.csproj">
+      <Project>{c93e515c-adc0-4c38-8f54-87e756211355}</Project>
+      <Name>ChunkingChannel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Upsmile.DicSync.BasicClasses\Upsmile.Sync.BasicClasses.csproj">
       <Project>{C4CDD207-567C-41C7-8B04-A1376B5653FB}</Project>
       <Name>Upsmile.Sync.BasicClasses</Name>
