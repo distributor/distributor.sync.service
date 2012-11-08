@@ -1,0 +1,48 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Upsmile.Sync.Executant.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ServiceEndPointAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">USExService</Value>
+    </Setting>
+    <Setting Name="ServiceHostAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">net.tcp://localhost:9000/Upsmile.Sync.Executant</Value>
+    </Setting>
+    <Setting Name="NeedLogSyncData" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MaxPoolSize" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="Pooling" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UserID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DataSource" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="OpenTimeout" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">04:00:00</Value>
+    </Setting>
+    <Setting Name="ReceiveTimeout" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">04:00:00</Value>
+    </Setting>
+    <Setting Name="SendTimeout" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">04:00:00</Value>
+    </Setting>
+    <Setting Name="CloseTimeout" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">04:00:00</Value>
+    </Setting>
+    <Setting Name="DBEncodingName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UTF-8</Value>
+    </Setting>
+    <Setting Name="TransmissionEncodingName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UTF-8</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

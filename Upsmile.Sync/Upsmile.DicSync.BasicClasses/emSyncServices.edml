@@ -1,0 +1,820 @@
+﻿<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SyncServicesModel.Store" Alias="Self" Provider="Devart.Data.Oracle" ProviderManifestToken="Ora11g" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:devart="http://devart.com/schemas/edml/StorageSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="SyncServicesEntitiesStoreContainer">
+          <EntitySet Name="ELSYS_TYPEs" EntityType="SyncServicesModel.Store.ELSYS_TYPE" store:Type="Tables" Schema="DISTRDEV" Table="ELSYS_TYPE" />
+          <EntitySet Name="LINK_SYNC_SERVICES_ENTITIES" EntityType="SyncServicesModel.Store.LINK_SYNC_SERVICES_ENTITIES" store:Type="Tables" Schema="DISTRDEV" Table="LINK_SYNC_SERVICES_ENTITIES" />
+          <EntitySet Name="V_LINK_SYNC_SER_ENT_NEEDEDs" EntityType="SyncServicesModel.Store.V_LINK_SYNC_SER_ENT_NEEDED" store:Type="Views" Schema="DISTRDEV" Table="V_LINK_SYNC_SER_ENT_NEEDED" />
+          <EntitySet Name="ELSYS_SYNC_SERVICES" EntityType="SyncServicesModel.Store.ELSYS_SYNC_SERVICES" store:Type="Tables" Schema="DISTRDEV" Table="ELSYS_SYNC_SERVICES" />
+          <EntitySet Name="DIC_PLACEs" EntityType="SyncServicesModel.Store.DIC_PLACE" store:Type="Tables" Schema="DISTRDEV" Table="DIC_PLACE" />
+          <AssociationSet Name="FK_ELSYS_SYNC_SERVICES_BRANCH" Association="SyncServicesModel.Store.FK_ELSYS_SYNC_SERVICES_BRANCH">
+            <End Role="DIC_PLACE" EntitySet="DIC_PLACEs" />
+            <End Role="ELSYS_SYNC_SERVICES" EntitySet="ELSYS_SYNC_SERVICES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DIC_PLACE_PARENT_ID" Association="SyncServicesModel.Store.FK_DIC_PLACE_PARENT_ID">
+            <End Role="DIC_PLACE" EntitySet="DIC_PLACEs" />
+            <End Role="DIC_PLACE1" EntitySet="DIC_PLACEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LINK_SYNC_SERV_ENT_ENT" Association="SyncServicesModel.Store.FK_LINK_SYNC_SERV_ENT_ENT">
+            <End Role="ELSYS_TYPE" EntitySet="ELSYS_TYPEs" />
+            <End Role="LINK_SYNC_SERVICES_ENTITIES" EntitySet="LINK_SYNC_SERVICES_ENTITIES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LINK_SYNC_SERV_ENT_SSERV" Association="SyncServicesModel.Store.FK_LINK_SYNC_SERV_ENT_SSERV">
+            <End Role="ELSYS_SYNC_SERVICES" EntitySet="ELSYS_SYNC_SERVICES" />
+            <End Role="LINK_SYNC_SERVICES_ENTITIES" EntitySet="LINK_SYNC_SERVICES_ENTITIES" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ELSYS_TYPE">
+          <Documentation>
+            <Summary>Тип сущности</Summary>
+            <LongDescription>Тип сущности</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int64" Nullable="false">
+            <Documentation>
+              <Summary>Идентификатор</Summary>
+              <LongDescription>Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TYPE_NAME" Type="VARCHAR2" Nullable="false" MaxLength="60">
+            <Documentation>
+              <Summary>Наименование</Summary>
+              <LongDescription>Наименование</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="REPL_NEED" Type="bool" DefaultValue="False">
+            <Documentation>
+              <Summary>Признак необходимости репликации (1 - реплицируют, 0 - не реплицируют) </Summary>
+              <LongDescription>Признак необходимости репликации (1 - реплицируют, 0 - не реплицируют) </LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TABLE_NAME" Type="VARCHAR2" Nullable="false" MaxLength="30">
+            <Documentation>
+              <Summary>Наименование таблицы</Summary>
+              <LongDescription>Наименование таблицы</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TAG" Type="VARCHAR2" MaxLength="8">
+            <Documentation>
+              <Summary>Таг типа</Summary>
+              <LongDescription>Таг типа</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="IS_DICTIONARY" Type="bool" Nullable="false" DefaultValue="False">
+            <Documentation>
+              <Summary>Является справочником (0 - нет, 1 - да)</Summary>
+              <LongDescription>Является справочником (0 - нет, 1 - да)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MASTER_QUERY_ID" Type="int64">
+            <Documentation>
+              <Summary>Ссылка на запрос для сущности</Summary>
+              <LongDescription>Ссылка на запрос для сущности</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="SELECT_COMPONENT_ID" Type="int64">
+            <Documentation>
+              <Summary>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (пока актуально только для справочников)</Summary>
+              <LongDescription>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (пока актуально только для справочников)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="IS_ANALYTIC" Type="bool" Nullable="false" DefaultValue="False">
+            <Documentation>
+              <Summary>Является ли аналитикой (0 - нет, 1 - да)</Summary>
+              <LongDescription>Является ли аналитикой (0 - нет, 1 - да)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DOCUMENT_GROUP_ID" Type="int">
+            <Documentation>
+              <Summary>ID Группы доктов (NULL - не документ)</Summary>
+              <LongDescription>ID Группы доктов (NULL - не документ)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DEFAULT_EDITOR_COMPONENT_ID" Type="int64">
+            <Documentation>
+              <Summary>ID редактора сущности</Summary>
+              <LongDescription>ID редактора сущности</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="SELECT_COMPONENT_2_ID" Type="int64">
+            <Documentation>
+              <Summary>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (верхний уровень деревянных справичников)</Summary>
+              <LongDescription>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (верхний уровень деревянных справичников)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="CREATED_BY_TERMINAL" Type="VARCHAR2" MaxLength="50">
+            <Documentation>
+              <Summary>Какой программист создал?</Summary>
+              <LongDescription>Какой программист создал?</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MODIFIED_BY_TERMINAL" Type="VARCHAR2" MaxLength="50">
+            <Documentation>
+              <Summary>Какой программист редактировал?</Summary>
+              <LongDescription>Какой программист редактировал?</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="IS_EXPORT" Type="bool" Nullable="false" DefaultValue="False">
+            <Documentation>
+              <Summary>Выгружать аналитику в 1с?</Summary>
+              <LongDescription>Выгружать аналитику в 1с?</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DEV_RESPONSIBLE" Type="int64" />
+          <Property Name="ANALYTIC_RESPONSIBLE" Type="int64" />
+          <Property Name="PHYSICAL_TABLE_NAME" Type="VARCHAR2" MaxLength="30">
+            <Documentation>
+              <Summary>Наименование таблицы (данные)</Summary>
+              <LongDescription>Наименование таблицы (данные)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="COMPONENT_PARENT_FOR_ENTITY" Type="int64" DefaultValue="0" />
+          <Property Name="EDITING" Type="int64" DefaultValue="1126">
+            <Documentation>
+              <Summary>Корректировка сущности (везде/ЦО/филиал)</Summary>
+              <LongDescription>Корректировка сущности (везде/ЦО/филиал)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="SYNC_TABLE_NAME" Type="VARCHAR2" MaxLength="30">
+            <Documentation>
+              <Summary>Наименование таблицы (синхронизация)</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <EntityType Name="LINK_SYNC_SERVICES_ENTITIES">
+          <Documentation>
+            <Summary>Связка службы синхронизации с сущностью</Summary>
+            <LongDescription>Связка службы синхронизации с сущностью</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int64" Nullable="false">
+            <Documentation>
+              <Summary>Идентификатор</Summary>
+              <LongDescription>Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ELSYS_SYNC_SERVICE_ID" Type="int64" Nullable="false">
+            <Documentation>
+              <Summary>Идентификатор сервиса синхронизации</Summary>
+              <LongDescription>Идентификатор сервиса синхронизации</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ELSYS_TYPE_ID" Type="int64" Nullable="false">
+            <Documentation>
+              <Summary>Идентификатор сущности</Summary>
+              <LongDescription>Идентификатор сущности</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="LAST_SYNC_TIME" Type="DATE">
+            <Documentation>
+              <Summary>Дата и время последней успешной синхронизации</Summary>
+              <LongDescription>Дата и время последней успешной синхронизации</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ITERATOR_ITEMS_LIMIT" Type="int64" DefaultValue="0">
+            <Documentation>
+              <Summary>Максимальное кол-во элементов передаваемых за итерацию</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <EntityType Name="V_LINK_SYNC_SER_ENT_NEEDED">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ELSYS_TYPE_ID" />
+            <PropertyRef Name="ELSYS_TYPE_NAME" />
+          </Key>
+          <Property Name="ID" Type="int64" Nullable="false" />
+          <Property Name="ELSYS_TYPE_ID" Type="int64" Nullable="false" />
+          <Property Name="ELSYS_TYPE_NAME" Type="VARCHAR2" Nullable="false" MaxLength="60" />
+          <Property Name="LAST_SYNC_TIME" Type="DATE" />
+        </EntityType>
+        <EntityType Name="ELSYS_SYNC_SERVICES">
+          <Documentation>
+            <Summary>Сервисы по синхронизации</Summary>
+            <LongDescription>Сервисы по синхронизации</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int64" Nullable="false">
+            <Documentation>
+              <Summary>Идентификатор службы синхронизации</Summary>
+              <LongDescription>Идентификатор службы синхронизации</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="BRANCH_ID" Type="int64">
+            <Documentation>
+              <Summary>Идентфикатор филиала</Summary>
+              <LongDescription>Идентфикатор филиала</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DESCRIPTION" Type="VARCHAR2" Nullable="false" MaxLength="100">
+            <Documentation>
+              <Summary>Описание</Summary>
+              <LongDescription>Описание</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ENDPOINT_ADDRESS" Type="VARCHAR2" Nullable="false" MaxLength="500">
+            <Documentation>
+              <Summary>Адрес сервиса</Summary>
+              <LongDescription>Адрес сервиса</LongDescription>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <EntityType Name="DIC_PLACE">
+          <Documentation>
+            <Summary>Элемент физической структуры предприятия</Summary>
+            <LongDescription>Элемент физической структуры предприятия</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int64" Nullable="false">
+            <Documentation>
+              <Summary>Идентификатор</Summary>
+              <LongDescription>Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="PARENT_ID" Type="int64">
+            <Documentation>
+              <Summary>Родительский элемент</Summary>
+              <LongDescription>Родительский элемент</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="NAME" Type="VARCHAR2" Nullable="false" MaxLength="30">
+            <Documentation>
+              <Summary>Наименование объекта</Summary>
+              <LongDescription>Наименование объекта</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="CREATED_BY" Type="int64" Nullable="false">
+            <Documentation>
+              <Summary>CREATED_BY</Summary>
+              <LongDescription>CREATED_BY</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="CREATED_DATE" Type="DATE" Nullable="false">
+            <Documentation>
+              <Summary>CREATED_DATE</Summary>
+              <LongDescription>CREATED_DATE</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MODIFIED_BY" Type="int64">
+            <Documentation>
+              <Summary>MODIFIED_BY</Summary>
+              <LongDescription>MODIFIED_BY</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MODIFIED_DATE" Type="DATE">
+            <Documentation>
+              <Summary>MODIFIED_DATE</Summary>
+              <LongDescription>MODIFIED_DATE</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TYPE_ID" Type="int64">
+            <Documentation>
+              <Summary>Тип элемента_Идентификатор</Summary>
+              <LongDescription>Тип элемента_Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="STATUS_ID" Type="int64" Nullable="false" DefaultValue="20" />
+          <Property Name="THROUGH_CODE" Type="int64" />
+        </EntityType>
+        <Association Name="FK_ELSYS_SYNC_SERVICES_BRANCH">
+          <End Role="DIC_PLACE" Type="SyncServicesModel.Store.DIC_PLACE" Multiplicity="0..1" />
+          <End Role="ELSYS_SYNC_SERVICES" Type="SyncServicesModel.Store.ELSYS_SYNC_SERVICES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIC_PLACE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ELSYS_SYNC_SERVICES">
+              <PropertyRef Name="BRANCH_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DIC_PLACE_PARENT_ID">
+          <End Role="DIC_PLACE" Type="SyncServicesModel.Store.DIC_PLACE" Multiplicity="0..1" />
+          <End Role="DIC_PLACE1" Type="SyncServicesModel.Store.DIC_PLACE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIC_PLACE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DIC_PLACE1">
+              <PropertyRef Name="PARENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LINK_SYNC_SERV_ENT_ENT">
+          <End Role="ELSYS_TYPE" Type="SyncServicesModel.Store.ELSYS_TYPE" Multiplicity="1" />
+          <End Role="LINK_SYNC_SERVICES_ENTITIES" Type="SyncServicesModel.Store.LINK_SYNC_SERVICES_ENTITIES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELSYS_TYPE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LINK_SYNC_SERVICES_ENTITIES">
+              <PropertyRef Name="ELSYS_TYPE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LINK_SYNC_SERV_ENT_SSERV">
+          <End Role="ELSYS_SYNC_SERVICES" Type="SyncServicesModel.Store.ELSYS_SYNC_SERVICES" Multiplicity="1" />
+          <End Role="LINK_SYNC_SERVICES_ENTITIES" Type="SyncServicesModel.Store.LINK_SYNC_SERVICES_ENTITIES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELSYS_SYNC_SERVICES">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LINK_SYNC_SERVICES_ENTITIES">
+              <PropertyRef Name="ELSYS_SYNC_SERVICE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GET_SYSDATE" devart:IsConcealedFunction="true" devart:ReturnType="DATE" IsComposable="false" BuiltIn="false" Aggregate="false" NiladicFunction="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="DISTRDEV" StoreFunctionName="EL_DIC_SYNC.GET_SYSDATE" />
+        <Function Name="SET_LINK_SYNC_SERV_CALL_DATA" IsComposable="false" BuiltIn="false" Aggregate="false" NiladicFunction="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="DISTRDEV" StoreFunctionName="EL_DIC_SYNC.SET_LINK_SYNC_SERV_CALL_DATA">
+          <Parameter Name="P_LINK_SYNC_SERV_ENT_ID" Type="decimal" Mode="In" />
+          <Parameter Name="P_SYNC_TIME" Type="DATE" Mode="In" />
+        </Function>
+        <Function Name="UPDATE_ENTITY_DATA" devart:IsConcealedFunction="true" devart:ReturnType="decimal" IsComposable="false" BuiltIn="false" Aggregate="false" NiladicFunction="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="DISTRDEV" StoreFunctionName="EL_DIC_SYNC.UPDATE_ENTITY_DATA">
+          <Parameter Name="P_IN_XML_DATA" Type="XMLTYPE" Mode="In" />
+          <Parameter Name="P_ELSYS_TYPE_ID" Type="double" Mode="In" />
+          <Parameter Name="P_ERROR_MSG" Type="VARCHAR2" Mode="Out" />
+        </Function>
+        <Function Name="GET_ENTITY_DATA" devart:IsConcealedFunction="true" devart:ReturnType="decimal" IsComposable="false" BuiltIn="false" Aggregate="false" NiladicFunction="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="DISTRDEV" StoreFunctionName="EL_DIC_SYNC.GET_ENTITY_DATA">
+          <Parameter Name="P_LINK_SYNC_SERV_ENT_ID" Type="double" Mode="In" />
+          <Parameter Name="P_ITERATOR_NUMBER" Type="decimal" Mode="In" />
+          <Parameter Name="P_XML_DATA" Type="CLOB" Mode="Out" />
+          <Parameter Name="P_ERROR_MSG" Type="VARCHAR2" Mode="Out" />
+        </Function>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SyncServicesModel" Alias="Self" d4p1:ViewGeneration="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:devart="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns:ed="http://devart.com/schemas/EntityDeveloper/1.0" xmlns:d4p1="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="SyncServicesEntities" annotation:LazyLoadingEnabled="true" ed:Guid="fb80ae51-fc72-4f84-b01e-7f6f50b22118">
+          <EntitySet Name="ElsysTypes" EntityType="SyncServicesModel.ElsysType" />
+          <EntitySet Name="Linksyncservicesentities" EntityType="SyncServicesModel.LinkSyncServicesEntity" />
+          <EntitySet Name="VLinkSyncSerEntNeededs" EntityType="SyncServicesModel.VLinkSyncSerEntNeeded" />
+          <EntitySet Name="ElsysSyncServics" EntityType="SyncServicesModel.ElsysSyncServic" />
+          <EntitySet Name="DICPLACEs" EntityType="SyncServicesModel.DICPLACE" />
+          <AssociationSet Name="DICPLACE_ElsysSyncServicSet" Association="SyncServicesModel.DICPLACE_ElsysSyncServic">
+            <End Role="DICPLACE" EntitySet="DICPLACEs" />
+            <End Role="ElsysSyncServics" EntitySet="ElsysSyncServics" />
+          </AssociationSet>
+          <AssociationSet Name="DICPLACE_DICPLACESet" Association="SyncServicesModel.DICPLACE_DICPLACE">
+            <End Role="DICPLACE_PARENTID" EntitySet="DICPLACEs" />
+            <End Role="DICPLACEs_PARENTID" EntitySet="DICPLACEs" />
+          </AssociationSet>
+          <AssociationSet Name="ElsysType_LinkSyncServicesEntitySet" Association="SyncServicesModel.ElsysType_LinkSyncServicesEntity">
+            <End Role="ElsysType" EntitySet="ElsysTypes" />
+            <End Role="LinkSyncServicesEntities" EntitySet="Linksyncservicesentities" />
+          </AssociationSet>
+          <AssociationSet Name="ElsysSyncServic_LinkSyncServicesEntitySet" Association="SyncServicesModel.ElsysSyncServic_LinkSyncServicesEntity">
+            <End Role="ElsysSyncServic" EntitySet="ElsysSyncServics" />
+            <End Role="LinkSyncServicesEntities" EntitySet="Linksyncservicesentities" />
+          </AssociationSet>
+          <FunctionImport Name="GET_SYSDATE" ReturnType="Collection(DateTime)" ed:Guid="a076c176-9f4b-42e8-b1fd-df94e162b6c3" />
+          <FunctionImport Name="SET_LINK_SYNC_SERV_CALL_DATA" ed:Guid="de76d889-f669-433c-93f5-496228ce5932">
+            <Parameter Name="P_LINK_SYNC_SERV_ENT_ID" Mode="In" Type="Decimal" />
+            <Parameter Name="P_SYNC_TIME" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="UPDATE_ENTITY_DATA" ReturnType="Collection(Decimal)" ed:Guid="0c790003-db1d-4cda-b724-441e91acef52">
+            <Parameter Name="P_IN_XML_DATA" Mode="In" Type="String" />
+            <Parameter Name="P_ELSYS_TYPE_ID" Mode="In" Type="Double" />
+            <Parameter Name="P_ERROR_MSG" Mode="Out" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GET_ENTITY_DATA" ReturnType="Collection(Decimal)" ed:Guid="0c8e08fc-1230-4215-b98e-c550450d8e9f">
+            <Parameter Name="P_LINK_SYNC_SERV_ENT_ID" Mode="In" Type="Double" />
+            <Parameter Name="P_ITERATOR_NUMBER" Mode="In" Type="Decimal" />
+            <Parameter Name="P_XML_DATA" Mode="Out" Type="String" />
+            <Parameter Name="P_ERROR_MSG" Mode="Out" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="ElsysType" ed:Guid="2c8fab46-9b70-4fa6-9086-84a97fec7b6e">
+          <Documentation>
+            <Summary>Тип сущности</Summary>
+            <LongDescription>Тип сущности</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="7fa0beb1-7c53-4a5d-af8c-d8ac951ee7b7">
+            <Documentation>
+              <Summary>Идентификатор</Summary>
+              <LongDescription>Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TYPENAME" Type="String" Nullable="false" MaxLength="60" ed:ValidateMaxLength="60" ed:ValidateRequired="True" ed:Guid="caf670a0-0192-4d4c-bd1c-21bc0edf2b07">
+            <Documentation>
+              <Summary>Наименование</Summary>
+              <LongDescription>Наименование</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="REPLNEED" Type="Boolean" DefaultValue="False" ed:ValidateRequired="False" ed:Guid="f417297f-a692-49b8-8b3d-1bb21660d19c">
+            <Documentation>
+              <Summary>Признак необходимости репликации (1 - реплицируют, 0 - не реплицируют) </Summary>
+              <LongDescription>Признак необходимости репликации (1 - реплицируют, 0 - не реплицируют) </LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TABLENAME" Type="String" Nullable="false" MaxLength="30" ed:ValidateMaxLength="30" ed:ValidateRequired="True" ed:Guid="75e5e6a9-3c4d-4b0d-bb1e-417338500508">
+            <Documentation>
+              <Summary>Наименование таблицы</Summary>
+              <LongDescription>Наименование таблицы</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TAG" Type="String" MaxLength="8" ed:ValidateMaxLength="8" ed:ValidateRequired="False" ed:Guid="3c01b6c8-7f67-4da8-b2e7-0ca8a0c4bf9e">
+            <Documentation>
+              <Summary>Таг типа</Summary>
+              <LongDescription>Таг типа</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ISDICTIONARY" Type="Boolean" Nullable="false" DefaultValue="False" ed:ValidateRequired="True" ed:Guid="e41a2d7d-fcb0-4301-a36c-3bde418abab8">
+            <Documentation>
+              <Summary>Является справочником (0 - нет, 1 - да)</Summary>
+              <LongDescription>Является справочником (0 - нет, 1 - да)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MASTERQUERYID" Type="Int64" ed:ValidateRequired="False" ed:Guid="c230cb3c-ef02-4fe7-963a-966b4cc3b4e7">
+            <Documentation>
+              <Summary>Ссылка на запрос для сущности</Summary>
+              <LongDescription>Ссылка на запрос для сущности</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="SELECTCOMPONENTID" Type="Int64" ed:ValidateRequired="False" ed:Guid="5a9e3975-5c55-4c62-9a82-c34ff0cda990">
+            <Documentation>
+              <Summary>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (пока актуально только для справочников)</Summary>
+              <LongDescription>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (пока актуально только для справочников)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ISANALYTIC" Type="Boolean" Nullable="false" DefaultValue="False" ed:ValidateRequired="True" ed:Guid="d3bea5b4-c7d8-4d1c-85e6-afe2ca89c00b">
+            <Documentation>
+              <Summary>Является ли аналитикой (0 - нет, 1 - да)</Summary>
+              <LongDescription>Является ли аналитикой (0 - нет, 1 - да)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DOCUMENTGROUPID" Type="Int32" ed:ValidateRequired="False" ed:Guid="cf42e435-214a-4e2c-9b4a-1ddd477ccf23">
+            <Documentation>
+              <Summary>ID Группы доктов (NULL - не документ)</Summary>
+              <LongDescription>ID Группы доктов (NULL - не документ)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DEFAULTEDITORCOMPONENTID" Type="Int64" ed:ValidateRequired="False" ed:Guid="a0873aba-56b7-49ec-b9c9-0a49b31c588b">
+            <Documentation>
+              <Summary>ID редактора сущности</Summary>
+              <LongDescription>ID редактора сущности</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="SELECTCOMPONENT2ID" Type="Int64" ed:ValidateRequired="False" ed:Guid="5608dbe7-448c-44a2-94a7-903213b7e30e">
+            <Documentation>
+              <Summary>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (верхний уровень деревянных справичников)</Summary>
+              <LongDescription>Ссылка на компонент, с помощью которого осуществляется выбор значения из этого справочника (верхний уровень деревянных справичников)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="CREATEDBYTERMINAL" Type="String" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="False" ed:Guid="1ee36435-91c9-4a2f-94a0-c57ae01d3094">
+            <Documentation>
+              <Summary>Какой программист создал?</Summary>
+              <LongDescription>Какой программист создал?</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MODIFIEDBYTERMINAL" Type="String" MaxLength="50" ed:ValidateMaxLength="50" ed:ValidateRequired="False" ed:Guid="a3b24f35-c4ef-44e7-952a-020fc4fd6da7">
+            <Documentation>
+              <Summary>Какой программист редактировал?</Summary>
+              <LongDescription>Какой программист редактировал?</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ISEXPORT" Type="Boolean" Nullable="false" DefaultValue="False" ed:ValidateRequired="True" ed:Guid="fff2a4f6-8ba3-4ddd-b886-73a014ea551f">
+            <Documentation>
+              <Summary>Выгружать аналитику в 1с?</Summary>
+              <LongDescription>Выгружать аналитику в 1с?</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DEVRESPONSIBLE" Type="Int64" ed:ValidateRequired="False" ed:Guid="df24d06d-e245-4440-b68d-30a35f28d75e" />
+          <Property Name="ANALYTICRESPONSIBLE" Type="Int64" ed:ValidateRequired="False" ed:Guid="5bf5eff3-a5cf-4b87-b463-da3a16195147" />
+          <Property Name="PHYSICALTABLENAME" Type="String" MaxLength="30" ed:ValidateMaxLength="30" ed:ValidateRequired="False" ed:Guid="7e5c4df2-b830-4fc8-ab8e-83c893219893">
+            <Documentation>
+              <Summary>Наименование таблицы (данные)</Summary>
+              <LongDescription>Наименование таблицы (данные)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="COMPONENTPARENTFORENTITY" Type="Int64" DefaultValue="0" ed:ValidateRequired="False" ed:Guid="cc8b6ddd-7131-43ff-ba46-0feca35b06db" />
+          <Property Name="EDITING" Type="Int64" DefaultValue="1126" ed:ValidateRequired="False" ed:Guid="117fef9d-b324-42b4-8d9b-9f4a2d434e28">
+            <Documentation>
+              <Summary>Корректировка сущности (везде/ЦО/филиал)</Summary>
+              <LongDescription>Корректировка сущности (везде/ЦО/филиал)</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="SYNCTABLENAME" Type="String" MaxLength="30" ed:ValidateMaxLength="30" ed:ValidateRequired="False" ed:Guid="fcd493f9-5d21-4ccb-a5e1-f2b2ddae8b3f">
+            <Documentation>
+              <Summary>Наименование таблицы (синхронизация)</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="LinkSyncServicesEntities" Relationship="SyncServicesModel.ElsysType_LinkSyncServicesEntity" FromRole="ElsysType" ToRole="LinkSyncServicesEntities" ed:Guid="efb7c2e5-568f-47a7-b5d5-d37dc880fe0d" />
+        </EntityType>
+        <EntityType Name="LinkSyncServicesEntity" ed:Guid="9fac291c-e31c-45c1-9e62-2b00e59f79c2">
+          <Documentation>
+            <Summary>Связка службы синхронизации с сущностью</Summary>
+            <LongDescription>Связка службы синхронизации с сущностью</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="98688809-4622-4769-a807-551e2989495a">
+            <Documentation>
+              <Summary>Идентификатор</Summary>
+              <LongDescription>Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ELSYSSYNCSERVICEID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="00c96c25-d087-43ac-85c3-81f117656db8">
+            <Documentation>
+              <Summary>Идентификатор сервиса синхронизации</Summary>
+              <LongDescription>Идентификатор сервиса синхронизации</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ELSYSTYPEID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="7c152200-0dff-4156-9cf2-fafb155369b9">
+            <Documentation>
+              <Summary>Идентификатор сущности</Summary>
+              <LongDescription>Идентификатор сущности</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="LASTSYNCTIME" Type="DateTime" Precision="0" ed:ValidateRequired="False" ed:Guid="33fba5ba-1b65-4584-969c-f9cd5e2736f4">
+            <Documentation>
+              <Summary>Дата и время последней успешной синхронизации</Summary>
+              <LongDescription>Дата и время последней успешной синхронизации</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ITERATORITEMSLIMIT" Type="Int64" DefaultValue="0" ed:ValidateRequired="False" ed:Guid="bad7e57f-d472-40bc-86fe-8472a5b0e6e8">
+            <Documentation>
+              <Summary>Максимальное кол-во элементов передаваемых за итерацию</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="ElsysType" Relationship="SyncServicesModel.ElsysType_LinkSyncServicesEntity" FromRole="LinkSyncServicesEntities" ToRole="ElsysType" ed:Guid="d8743d56-7870-4743-97d2-6ed5b1c1f5a8" />
+          <NavigationProperty Name="ElsysSyncServic" Relationship="SyncServicesModel.ElsysSyncServic_LinkSyncServicesEntity" FromRole="LinkSyncServicesEntities" ToRole="ElsysSyncServic" ed:Guid="b18ef516-3feb-4e5f-bb9a-835636dc59f0" />
+        </EntityType>
+        <EntityType Name="VLinkSyncSerEntNeeded" ed:Guid="261fbbfc-446b-4078-9745-34e0b78332d4">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ELSYSTYPEID" />
+            <PropertyRef Name="ELSYSTYPENAME" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="0d79f12e-3abc-4cbc-96da-7e66b362bef8" />
+          <Property Name="ELSYSTYPEID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="82401830-25e4-41f2-a789-91ad87026082" />
+          <Property Name="ELSYSTYPENAME" Type="String" Nullable="false" MaxLength="60" ed:ValidateRequired="True" ed:Guid="8bea82cb-2f1e-457b-90d2-20754b6384fe" />
+          <Property Name="LASTSYNCTIME" Type="DateTime" ed:ValidateRequired="False" ed:Guid="a5d2f99c-8067-451b-85dd-47a731fa4895" />
+        </EntityType>
+        <EntityType Name="ElsysSyncServic" ed:Guid="58f40169-c1fa-4cee-b13f-ccd56aedc16f">
+          <Documentation>
+            <Summary>Сервисы по синхронизации</Summary>
+            <LongDescription>Сервисы по синхронизации</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="5e151bd7-b857-4f39-a56d-4e2c7dbce0f7">
+            <Documentation>
+              <Summary>Идентификатор службы синхронизации</Summary>
+              <LongDescription>Идентификатор службы синхронизации</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="BRANCHID" Type="Int64" ed:ValidateRequired="False" ed:Guid="e28611b6-4516-48a5-9240-556b8998f200">
+            <Documentation>
+              <Summary>Идентфикатор филиала</Summary>
+              <LongDescription>Идентфикатор филиала</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="True" ed:Guid="4df7be3b-de58-402b-8980-66ba8f2cf4d8">
+            <Documentation>
+              <Summary>Описание</Summary>
+              <LongDescription>Описание</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="ENDPOINTADDRESS" Type="String" Nullable="false" MaxLength="500" ed:ValidateMaxLength="500" ed:ValidateRequired="True" ed:Guid="651b078a-2f31-48a5-836e-e4227d63f0b4">
+            <Documentation>
+              <Summary>Адрес сервиса</Summary>
+              <LongDescription>Адрес сервиса</LongDescription>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="DICPLACE" Relationship="SyncServicesModel.DICPLACE_ElsysSyncServic" FromRole="ElsysSyncServics" ToRole="DICPLACE" ed:Guid="5e358184-463c-4189-8a7c-70e2b3a47eed" />
+          <NavigationProperty Name="LinkSyncServicesEntities" Relationship="SyncServicesModel.ElsysSyncServic_LinkSyncServicesEntity" FromRole="ElsysSyncServic" ToRole="LinkSyncServicesEntities" ed:Guid="600b984e-d8bb-4c8a-bccf-751c6f64986b" />
+        </EntityType>
+        <EntityType Name="DICPLACE" ed:Guid="432f76cb-c577-41fc-b222-f37fe88d3e09">
+          <Documentation>
+            <Summary>Элемент физической структуры предприятия</Summary>
+            <LongDescription>Элемент физической структуры предприятия</LongDescription>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="e030306c-3fb7-420c-8529-4bd346935492">
+            <Documentation>
+              <Summary>Идентификатор</Summary>
+              <LongDescription>Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="PARENTID" Type="Int64" ed:ValidateRequired="False" ed:Guid="68b74511-6c00-4c9e-878f-b4869d5564b8">
+            <Documentation>
+              <Summary>Родительский элемент</Summary>
+              <LongDescription>Родительский элемент</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="NAME" Type="String" Nullable="false" MaxLength="30" ed:ValidateMaxLength="30" ed:ValidateRequired="True" ed:Guid="3b25ca3d-7a42-46ee-a704-f9796008f4d9">
+            <Documentation>
+              <Summary>Наименование объекта</Summary>
+              <LongDescription>Наименование объекта</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="CREATEDBY" Type="Int64" Nullable="false" ed:ValidateRequired="True" ed:Guid="c6746f5d-2e37-4b52-b918-230bb02087b4">
+            <Documentation>
+              <Summary>CREATED_BY</Summary>
+              <LongDescription>CREATED_BY</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="CREATEDDATE" Type="DateTime" Nullable="false" Precision="0" ed:ValidateRequired="True" ed:Guid="400014cd-3d2f-4b9e-a6ed-f359eee52a28">
+            <Documentation>
+              <Summary>CREATED_DATE</Summary>
+              <LongDescription>CREATED_DATE</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MODIFIEDBY" Type="Int64" ed:ValidateRequired="False" ed:Guid="df75165b-d855-43e4-90c6-1467377e1273">
+            <Documentation>
+              <Summary>MODIFIED_BY</Summary>
+              <LongDescription>MODIFIED_BY</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="MODIFIEDDATE" Type="DateTime" Precision="0" ed:ValidateRequired="False" ed:Guid="851d62fb-7c5c-454b-920e-fab8d57c3197">
+            <Documentation>
+              <Summary>MODIFIED_DATE</Summary>
+              <LongDescription>MODIFIED_DATE</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="TYPEID" Type="Int64" ed:ValidateRequired="False" ed:Guid="07fcaef2-929f-4ec3-aea6-6412c4544600">
+            <Documentation>
+              <Summary>Тип элемента_Идентификатор</Summary>
+              <LongDescription>Тип элемента_Идентификатор</LongDescription>
+            </Documentation>
+          </Property>
+          <Property Name="STATUSID" Type="Int64" Nullable="false" DefaultValue="20" ed:ValidateRequired="True" ed:Guid="106105ab-138d-48cd-a762-a34c723f795f" />
+          <Property Name="THROUGHCODE" Type="Int64" ed:ValidateRequired="False" ed:Guid="5903e57b-643b-4087-9b30-f6a6f5c20ac4" />
+          <NavigationProperty Name="ElsysSyncServics" Relationship="SyncServicesModel.DICPLACE_ElsysSyncServic" FromRole="DICPLACE" ToRole="ElsysSyncServics" ed:Guid="27e83ad3-77e1-4e06-8546-b4bd6c346120" />
+          <NavigationProperty Name="DICPLACEs_PARENTID" Relationship="SyncServicesModel.DICPLACE_DICPLACE" FromRole="DICPLACE_PARENTID" ToRole="DICPLACEs_PARENTID" ed:Guid="3cc74b14-0a09-4e20-87e9-1f56f7db81e8" />
+          <NavigationProperty Name="DICPLACE_PARENTID" Relationship="SyncServicesModel.DICPLACE_DICPLACE" FromRole="DICPLACEs_PARENTID" ToRole="DICPLACE_PARENTID" ed:Guid="23ba5c65-730e-423a-9b3c-caa43118f431" />
+        </EntityType>
+        <Association Name="DICPLACE_ElsysSyncServic" ed:Guid="8316affc-43bc-4f01-8ed0-bdde6f3a5f9e">
+          <End Role="DICPLACE" Type="SyncServicesModel.DICPLACE" Multiplicity="0..1" />
+          <End Role="ElsysSyncServics" Type="SyncServicesModel.ElsysSyncServic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DICPLACE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ElsysSyncServics">
+              <PropertyRef Name="BRANCHID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DICPLACE_DICPLACE" ed:Guid="f137cccb-e65e-4600-bfce-0282db8c8a94">
+          <End Role="DICPLACE_PARENTID" Type="SyncServicesModel.DICPLACE" Multiplicity="0..1" />
+          <End Role="DICPLACEs_PARENTID" Type="SyncServicesModel.DICPLACE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DICPLACE_PARENTID">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DICPLACEs_PARENTID">
+              <PropertyRef Name="PARENTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ElsysType_LinkSyncServicesEntity" ed:Guid="87d614b5-753c-4629-9774-c97be6be7a7f">
+          <End Role="ElsysType" Type="SyncServicesModel.ElsysType" Multiplicity="1" />
+          <End Role="LinkSyncServicesEntities" Type="SyncServicesModel.LinkSyncServicesEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElsysType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LinkSyncServicesEntities">
+              <PropertyRef Name="ELSYSTYPEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ElsysSyncServic_LinkSyncServicesEntity" ed:Guid="a60e2e72-7501-47f8-8286-f94d2f7e82ff">
+          <End Role="ElsysSyncServic" Type="SyncServicesModel.ElsysSyncServic" Multiplicity="1" />
+          <End Role="LinkSyncServicesEntities" Type="SyncServicesModel.LinkSyncServicesEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElsysSyncServic">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LinkSyncServicesEntities">
+              <PropertyRef Name="ELSYSSYNCSERVICEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- MSL content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SyncServicesEntitiesStoreContainer" CdmEntityContainer="SyncServicesEntities">
+          <EntitySetMapping Name="ElsysTypes">
+            <EntityTypeMapping TypeName="SyncServicesModel.ElsysType">
+              <MappingFragment StoreEntitySet="ELSYS_TYPEs">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TYPENAME" ColumnName="TYPE_NAME" />
+                <ScalarProperty Name="REPLNEED" ColumnName="REPL_NEED" />
+                <ScalarProperty Name="TABLENAME" ColumnName="TABLE_NAME" />
+                <ScalarProperty Name="TAG" ColumnName="TAG" />
+                <ScalarProperty Name="ISDICTIONARY" ColumnName="IS_DICTIONARY" />
+                <ScalarProperty Name="MASTERQUERYID" ColumnName="MASTER_QUERY_ID" />
+                <ScalarProperty Name="SELECTCOMPONENTID" ColumnName="SELECT_COMPONENT_ID" />
+                <ScalarProperty Name="ISANALYTIC" ColumnName="IS_ANALYTIC" />
+                <ScalarProperty Name="DOCUMENTGROUPID" ColumnName="DOCUMENT_GROUP_ID" />
+                <ScalarProperty Name="DEFAULTEDITORCOMPONENTID" ColumnName="DEFAULT_EDITOR_COMPONENT_ID" />
+                <ScalarProperty Name="SELECTCOMPONENT2ID" ColumnName="SELECT_COMPONENT_2_ID" />
+                <ScalarProperty Name="CREATEDBYTERMINAL" ColumnName="CREATED_BY_TERMINAL" />
+                <ScalarProperty Name="MODIFIEDBYTERMINAL" ColumnName="MODIFIED_BY_TERMINAL" />
+                <ScalarProperty Name="ISEXPORT" ColumnName="IS_EXPORT" />
+                <ScalarProperty Name="DEVRESPONSIBLE" ColumnName="DEV_RESPONSIBLE" />
+                <ScalarProperty Name="ANALYTICRESPONSIBLE" ColumnName="ANALYTIC_RESPONSIBLE" />
+                <ScalarProperty Name="PHYSICALTABLENAME" ColumnName="PHYSICAL_TABLE_NAME" />
+                <ScalarProperty Name="COMPONENTPARENTFORENTITY" ColumnName="COMPONENT_PARENT_FOR_ENTITY" />
+                <ScalarProperty Name="EDITING" ColumnName="EDITING" />
+                <ScalarProperty Name="SYNCTABLENAME" ColumnName="SYNC_TABLE_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Linksyncservicesentities">
+            <EntityTypeMapping TypeName="SyncServicesModel.LinkSyncServicesEntity">
+              <MappingFragment StoreEntitySet="LINK_SYNC_SERVICES_ENTITIES">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ELSYSSYNCSERVICEID" ColumnName="ELSYS_SYNC_SERVICE_ID" />
+                <ScalarProperty Name="ELSYSTYPEID" ColumnName="ELSYS_TYPE_ID" />
+                <ScalarProperty Name="LASTSYNCTIME" ColumnName="LAST_SYNC_TIME" />
+                <ScalarProperty Name="ITERATORITEMSLIMIT" ColumnName="ITERATOR_ITEMS_LIMIT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VLinkSyncSerEntNeededs">
+            <EntityTypeMapping TypeName="SyncServicesModel.VLinkSyncSerEntNeeded">
+              <MappingFragment StoreEntitySet="V_LINK_SYNC_SER_ENT_NEEDEDs">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ELSYSTYPEID" ColumnName="ELSYS_TYPE_ID" />
+                <ScalarProperty Name="ELSYSTYPENAME" ColumnName="ELSYS_TYPE_NAME" />
+                <ScalarProperty Name="LASTSYNCTIME" ColumnName="LAST_SYNC_TIME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ElsysSyncServics">
+            <EntityTypeMapping TypeName="SyncServicesModel.ElsysSyncServic">
+              <MappingFragment StoreEntitySet="ELSYS_SYNC_SERVICES">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BRANCHID" ColumnName="BRANCH_ID" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ENDPOINTADDRESS" ColumnName="ENDPOINT_ADDRESS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DICPLACEs">
+            <EntityTypeMapping TypeName="SyncServicesModel.DICPLACE">
+              <MappingFragment StoreEntitySet="DIC_PLACEs">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PARENTID" ColumnName="PARENT_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="CREATEDBY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CREATEDDATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFIEDDATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="TYPEID" ColumnName="TYPE_ID" />
+                <ScalarProperty Name="STATUSID" ColumnName="STATUS_ID" />
+                <ScalarProperty Name="THROUGHCODE" ColumnName="THROUGH_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GET_SYSDATE" FunctionName="SyncServicesModel.Store.GET_SYSDATE" />
+          <FunctionImportMapping FunctionImportName="SET_LINK_SYNC_SERV_CALL_DATA" FunctionName="SyncServicesModel.Store.SET_LINK_SYNC_SERV_CALL_DATA" />
+          <FunctionImportMapping FunctionImportName="UPDATE_ENTITY_DATA" FunctionName="SyncServicesModel.Store.UPDATE_ENTITY_DATA" />
+          <FunctionImportMapping FunctionImportName="GET_ENTITY_DATA" FunctionName="SyncServicesModel.Store.GET_ENTITY_DATA" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <edmx:Diagrams>
+      <Diagram Name="Main" />
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
