@@ -53,26 +53,26 @@ namespace Upsmile.Sync.Executant
         /// <returns>Строка. В случае успешной синхронизации строка пустая. В противном случае выводится ошибка</returns>
         public string EntitySync(Stream aInValues)
         {
-
-            var lResult = new USInServiceRetValues { Result = 1, ErrorMessage = string.Empty };
-
+            var lResult = new USInServiceRetValues { Result = 0, ErrorMessage = string.Empty };
             // входные параметры элемент класса USInServiceValues
             // сериализованные JSON
             try
             {
                 // получение потока и занесение его в строку
-                string lJsonInValues = StreamToStr(aInValues);
-                this.WriteLog(USLogLevel.Trace, "EntitySync: поток занесен в строку");
+                var lJsonInValues = StreamToStr(aInValues);
+                this.WriteLog(USLogLevel.Trace, 
+                    "EntitySync: поток занесен в строку");
                 aInValues.Dispose();
-                
                 // десериализация входных данных
                 var lInValues = Newtonsoft.Json.JsonConvert.DeserializeObject<USInServiceValues>(lJsonInValues);
-                this.WriteLog(USLogLevel.Trace, "EntitySync: EntityTypeId = {0} входные данные десериализованы", lInValues.EntityTypeId);
+                this.WriteLog(USLogLevel.Trace, "EntitySync: EntityTypeId = {0} входные данные десериализованы",
+                    lInValues.EntityTypeId);
                 
                 // запуск синхронизации
                 var ldicSync = new USExDicSync();
                 var lSyncErrorMessage = string.Empty;
-                var lSyncResult = ldicSync.DicSync(lInValues.EntityTypeId, lInValues.JsonEntityData, ref lSyncErrorMessage);
+                var lSyncResult = ldicSync.DicSync(lInValues.EntityTypeId, 
+                    lInValues.JsonEntityData, ref lSyncErrorMessage);
                 lResult.Result = lSyncResult;
                 lResult.ErrorMessage = lSyncErrorMessage;
             }
