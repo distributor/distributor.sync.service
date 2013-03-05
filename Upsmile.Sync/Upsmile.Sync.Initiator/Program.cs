@@ -1,4 +1,8 @@
-﻿using System.ServiceProcess;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceProcess;
+using System.Text;
 
 namespace Upsmile.Sync.Initiator
 {
@@ -9,10 +13,11 @@ namespace Upsmile.Sync.Initiator
         /// </summary>
         static void Main()
         {
-            var ServicesToRun = new ServiceBase[] 
-                                              { 
-                                                  new USInWinService() 
-                                              };
+            ServiceBase[] ServicesToRun;
+            ServicesToRun = new ServiceBase[] 
+			{ 
+				new USInWinService() 
+			};
             ServiceBase.Run(ServicesToRun);
         }
     }

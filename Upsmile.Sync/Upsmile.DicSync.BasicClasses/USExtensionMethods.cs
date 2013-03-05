@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using NLog;
 
 namespace Upsmile.Sync.BasicClasses.ExtensionMethods
@@ -6,7 +9,6 @@ namespace Upsmile.Sync.BasicClasses.ExtensionMethods
     /// <summary>
     /// уровни логирования
     /// </summary>
-    [Flags]
     public enum USLogLevel
     {
         None = 0,

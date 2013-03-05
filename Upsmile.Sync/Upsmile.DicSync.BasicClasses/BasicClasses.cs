@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Data.Linq.Mapping;
+using Newtonsoft.Json;
 
 namespace Upsmile.Sync.BasicClasses
 {

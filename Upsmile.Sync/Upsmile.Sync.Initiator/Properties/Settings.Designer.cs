@@ -79,7 +79,7 @@ namespace Upsmile.Sync.Initiator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("distrdev")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string UserID {
             get {
                 return ((string)(this["UserID"]));
@@ -88,7 +88,7 @@ namespace Upsmile.Sync.Initiator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DISTR_DN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DataSource {
             get {
                 return ((string)(this["DataSource"]));
@@ -97,7 +97,7 @@ namespace Upsmile.Sync.Initiator.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("distrdev")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Password {
             get {
                 return ((string)(this["Password"]));

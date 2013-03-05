@@ -7,31 +7,46 @@ using Upsmile.Sync.BasicClasses.ExtensionMethods;
 
 namespace Upsmile.Sync.Executant
 {
-    public static class USExserviceHelper
-    {
-        public static string ToEncodeString(this Stream stream,Encoding dbencoding,Encoding transmissionEncoding)
-        {
-            if(stream == null) throw new ArgumentNullException("stream");
-            if(dbencoding == null) throw new ArgumentNullException("dbencoding");
-            if(transmissionEncoding == null) throw new ArgumentNullException("transmissionEncoding");
-             string result;
-             using (var reader = new StreamReader(stream, transmissionEncoding))
-             {
-                result = reader.ReadToEnd();
-                reader.Close();
-             }
-            return result;
-        }
-    }
-
     /// <summary>
     /// Сервис синхронизации данных. 
     /// Запускается на филиале
     /// </summary>
     public class USExService : IUSExService, IUSLogBasicClass
     {
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
+        /// <summary>
+        /// прелобразование потока в строку
+        /// </summary>
+        /// <param name="aStream">Поток для преобразования</param>
+        /// <returns>Строка (преобразованный поток)</returns>
+        private string StreamToStr(Stream aStream)
+        {
+            this.WriteLog(USLogLevel.Trace, "StreamToStr: начато преобразование");
+            this.WriteLog(USLogLevel.Trace, "EntitySync: Кодировка на клиенте {0}", Encoding.Default.EncodingName);
+            var DBEncoding = Encoding.GetEncoding(Properties.Settings.Default.DBEncodingName);
+            var TransmissionEncoding = Encoding.GetEncoding(Properties.Settings.Default.TransmissionEncodingName);
+            this.WriteLog(USLogLevel.Trace, "EntitySync: Кодировка на базе {0}", DBEncoding.EncodingName);
+            this.WriteLog(USLogLevel.Trace, "EntitySync: Кодировка передачи {0}", TransmissionEncoding.EncodingName);
+            
+            string lResult = string.Empty;
+            using (StreamReader reader = new StreamReader(aStream, TransmissionEncoding))
+            {
+                try
+                {
+                    lResult = reader.ReadToEnd();
+                }
+                catch (Exception e)
+                {
+                    this.WriteLogException(e.ToString(), e);
+                    
+                    lResult = string.Empty;
+                }
+            }
+            lResult = DBEncoding.GetString(Encoding.Convert(TransmissionEncoding, DBEncoding, DBEncoding.GetBytes(lResult)));
+            this.WriteLog(USLogLevel.Trace, "StreamToStr: закончено преобразование");
+            
+            return lResult;
+        }
+        
         /// <summary>
         /// запуск синхронизации сущности на филиале
         /// </summary>
@@ -39,24 +54,30 @@ namespace Upsmile.Sync.Executant
         /// <returns>Строка. В случае успешной синхронизации строка пустая. В противном случае выводится ошибка</returns>
         public string EntitySync(Stream aInValues)
         {
-            var lResult = new USInServiceRetValues { Result = 0, ErrorMessage = string.Empty };
+
+            USInServiceRetValues lResult = new USInServiceRetValues() { Result = 1, ErrorMessage = string.Empty };
+
+            // входные параметры элемент класса USInServiceValues
+            // сериализованные JSON
             try
             {
-                var DBEncoding = Encoding.GetEncoding(Properties.Settings.Default.DBEncodingName);
-                var TransmissionEncoding = Encoding.GetEncoding(Properties.Settings.Default.TransmissionEncodingName);
-                var lJsonInValues = aInValues.ToEncodeString(DBEncoding, TransmissionEncoding);
+                // получение потока и занесение его в строку
+                string lJsonInValues = StreamToStr(aInValues);
+                this.WriteLog(USLogLevel.Trace, "EntitySync: поток занесен в строку");
                 aInValues.Dispose();
-                var lInValues = Newtonsoft.Json.JsonConvert.DeserializeObject<USInServiceValues>(lJsonInValues);
                 
+                // десериализация входных данных
+                var lInValues = Newtonsoft.Json.JsonConvert.DeserializeObject<USInServiceValues>(lJsonInValues);
+                lJsonInValues = string.Empty;
+                this.WriteLog(USLogLevel.Trace, "EntitySync: EntityTypeId = {0} входные данные десериализованы", lInValues.EntityTypeId);
+                
+                // запуск синхронизации
                 var ldicSync = new USExDicSync();
-                ldicSync.BeginExecute += ldicSync_BeginExecute;
-                ldicSync.ErrorExecute += ldicSync_ErrorExecute;
-                ldicSync.EndExecute += ldicSync_EndExecute;
-
                 var lSyncErrorMessage = string.Empty;
                 var lSyncResult = ldicSync.DicSync(lInValues.EntityTypeId, lInValues.JsonEntityData, ref lSyncErrorMessage);
                 lResult.Result = lSyncResult;
                 lResult.ErrorMessage = lSyncErrorMessage;
+                lInValues = null;
             }
             catch (Exception e)
             {
@@ -67,25 +88,9 @@ namespace Upsmile.Sync.Executant
             return Newtonsoft.Json.JsonConvert.SerializeObject(lResult);
         }
 
-        static void ldicSync_EndExecute(ExecutantArgument argument)
+        public void ProcessMessage(System.ServiceModel.Channels.Message messsage)
         {
-            LogEvent(argument);
-        }
-
-        private static void LogEvent(ExecutantArgument argument)
-        {
-            argument.With(x => x.Result).Do(x => _logger.Trace(x));
-            argument.With(x => x.Exception).Do(x => _logger.Debug(Newtonsoft.Json.JsonConvert.SerializeObject(x)));
-        }
-
-        static void ldicSync_ErrorExecute(ExecutantArgument argument)
-        {
-          LogEvent(argument);   
-        }
-
-        static void ldicSync_BeginExecute(ExecutantArgument argument)
-        {
-            LogEvent(argument);
+            //Console.WriteLine("Message received with action {0}", messsage.Headers.Action);
         }
     }
 }
